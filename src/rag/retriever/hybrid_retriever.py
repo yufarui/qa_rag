@@ -100,18 +100,6 @@ class HybridRetriever(BaseRetriever):
         return HybridRetriever(vector_store=vector_store, keyword_store=keyword_store)
 
     @classmethod
-    def delete_hybrid_retriever(cls):
-        import src.rag.retriever.es_handler as es_handler
-
-        import src.rag.retriever.chroma_handler as chroma_handler
-
-        vector_store = chroma_handler.chroma_store
-        keyword_store = es_handler.es_store
-        # vector_store.delete_collection()
-        es_client: Elasticsearch = keyword_store.client
-        es_client.indices.delete(index=es_handler.index_name)
-
-    @classmethod
     def clean_metadata(cls, metadata):
         cleaned = {}
         if metadata is None:
