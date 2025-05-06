@@ -15,8 +15,7 @@ split_theme_prompt_template = """
 * 必须使用JSON格式返回，符合预定义模式
 * 请务必按照整理的文档,进行汇总
 * 重复的文档可以合并
-# metadata,是我传递过去文档中对应的元数据信息
-* 如无有效主题，返回空数组
+* 如无有效内容，返回空
 
 ==== 以下是需要整理的文档 ===
 {context}
@@ -29,7 +28,6 @@ class SingleContent(BaseModel):
     """
     extracted_content: str = Field(description="提取的内容,控制在100-200字")
     keyword: Optional[str] = Field(description="关键字")
-    metadata: Optional[ManualImages] = Field(default=None, description="文档中的元素据")
 
 
 class ContentResponse(BaseModel):

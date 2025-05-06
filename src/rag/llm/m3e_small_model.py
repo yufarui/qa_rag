@@ -9,8 +9,6 @@ from sklearn.cluster import AgglomerativeClustering
 from src import constant
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model_path = constant.m3e_large_model_path
-
 
 # Initialize model with GPU support and normalization
 embedding_model = SentenceTransformer("moka-ai/m3e-small")

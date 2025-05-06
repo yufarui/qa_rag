@@ -7,7 +7,7 @@ from typing_extensions import List
 
 from src import constant
 from src.base_model.manual_images import ManualImages
-from src.mongodb_config import MongoConfig
+from src.config.mongodb_config import MongoConfig
 
 # 全局配置
 manual_images_collection: Collection = MongoConfig.get_collection("manual_images")

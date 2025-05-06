@@ -1,18 +1,17 @@
 import re
-import os
 
 import fitz
 import tiktoken
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pymongo.collection import Collection
-from typing_extensions import Tuple, List
+from typing_extensions import List
 
 import src.rag.llm.m3e_small_model as m3e_small_model
 from src import constant
 from src.base_model.manual_images import ManualImages
 from src.base_model.manual_info_mongo import ManualInfo
-from src.mongodb_config import MongoConfig
+from src.config.mongodb_config import MongoConfig
 import src.rag.loader.image_handler as image_handler
 
 # 公共配置区
@@ -55,10 +54,12 @@ def load_pdf() -> list[Document]:
                 manual_images_list.append(manual_image)
 
         if text.strip():
+            unique_id = f"{hash(text)}_{page}"
             metadata = {
+                "unique_id": unique_id,
                 "source": file_path,
                 "page": page_num + 1,
-                "images_info": manual_images_list,
+                "images_info": manual_images_list
             }
 
             raw_docs.append(Document(page_content=text, metadata=metadata))
@@ -79,7 +80,8 @@ def load_and_split() -> list[Document]:
         for chunk in grouped_chunks:
             # 以 chunk 为单位继续用 langchain 切分（带 overlap）
             split_docs = text_splitter.create_documents([chunk], metadatas=[doc.metadata])
-            save_2_mongo(split_docs)
+
+            # save_2_mongo(split_docs)
             all_split_docs.extend(split_docs)
 
     return all_split_docs
@@ -92,7 +94,7 @@ def save_2_mongo(split_docs):
         page = metadata.get("page")
 
         # 构造唯一性 unique_id
-        unique_id = f"{hash(doc.page_content)}_{page}"
+        unique_id = metadata.get("unique_id")
         # 处理 images_info 字段
         images_info = metadata.get("images_info")
 

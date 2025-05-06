@@ -39,5 +39,5 @@ def faiss_retriever_with_score(faiss_vector_store: FAISS, query: str, k: int = 1
     docs_with_scores = faiss_vector_store.similarity_search_with_score(query, k=k)
     docs_with_scores.sort(key=lambda x: x[1])
     # 根据分数过滤
-    filtered_docs = [doc for doc, cos_sim in docs_with_scores if cos_sim <= 1 - threshold]
+    filtered_docs = [doc for doc, l2_score in docs_with_scores if l2_score <= 1 - threshold]
     return filtered_docs

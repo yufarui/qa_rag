@@ -10,4 +10,4 @@ BASE_URL = get_env_key("BASE_URL")
 
 #  模型路径
 rerank_model_path = "../pre_train_model/bge-reranker-large"
-m3e_large_model_path = "../pre_train_model/bge-reranker-large"
+m3e_large_model_path = "../pre_train_model/m3e-large"
